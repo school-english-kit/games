@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Usual Week</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@500;700;800&display=swap');
+
+:root{
+  --bg:#f7f7f2;
+  --green:#6f8f58;
+  --line:#aaaaaa;
+  --paper:#ffffff;
+  --morning:#fff8d9;
+  --afternoon:#fff0df;
+  --evening:#eaf6ff;
+  --night:#d7e4fb;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:'Nunito', Arial, sans-serif;
+  color:#222;
+  overflow:hidden;
+}
+
+.app{
+  height:100vh;
+  display:grid;
+  grid-template-rows:72px 1fr 220px;
+  gap:10px;
+  padding:14px 22px;
+}
+
+.header{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+h1{
+  margin:0;
+  font-family:'Patrick Hand', cursive;
+  font-size:50px;
+  color:var(--green);
+  letter-spacing:1px;
+}
+
+.qr{
+  position:absolute;
+  left:0;
+  top:0;
+  width:58px;
+  height:58px;
+  object-fit:contain;
+}
+
+.link{
+  position:absolute;
+  right:0;
+  top:8px;
+  font-size:14px;
+  font-weight:800;
+}
+
+.plannerBox{
+  border:2px solid var(--line);
+  border-radius:16px;
+  background:var(--paper);
+  overflow:auto;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:1220px;
+}
+
+th{
+  height:40px;
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:white;
+  border:1px solid var(--line);
+  font-size:15px;
+}
+
+td{
+  height:46px;
+  border:1px solid var(--line);
+  vertical-align:top;
+}
+
+.periodHead{
+  width:80px;
+  min-width:80px;
+  position:sticky;
+  left:0;
+  z-index:35;
+  border-right:1px solid var(--line);
+}
+
+.hourHead{
+  width:80px;
+  min-width:80px;
+  position:sticky;
+  left:80px;
+  z-index:35;
+  border-right:2px solid var(--line);
+}
+
+.periodCell{
+  width:80px;
+  min-width:80px;
+  position:sticky;
+  left:0;
+  z-index:12;
+  border-right:1px solid var(--line);
+  text-align:center;
+  vertical-align:middle;
+}
+
+.periodText{
+  font-family:'Patrick Hand', cursive;
+  color:#617d4e;
+  font-size:24px;
+  line-height:1;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  display:inline-block;
+  white-space:nowrap;
+}
+
+.hourCell{
+  width:80px;
+  min-width:80px;
+  position:sticky;
+  left:80px;
+  z-index:11;
+  border-right:2px solid var(--line);
+  padding:14px 8px 4px;
+  font-weight:800;
+  font-size:14px;
+  text-align:right;
+  vertical-align:top;
+}
+
+.morning{background:var(--morning);}
+.afternoon{background:var(--afternoon);}
+.evening{background:var(--evening);}
+.night{background:var(--night);}
+
+.slot{
+  min-width:130px;
+  padding:4px;
+  position:relative;
+  z-index:1;
+  overflow:auto;
+}
+
+.bottom{
+  display:grid;
+  grid-template-columns:1.55fr .75fr 1fr;
+  gap:12px;
+  min-height:0;
+}
+
+.panel{
+  background:white;
+  border:2px solid var(--line);
+  border-radius:16px;
+  padding:10px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.panelTitle{
+  font-family:'Patrick Hand', cursive;
+  color:var(--green);
+  font-size:29px;
+  text-align:center;
+  line-height:1;
+  margin-bottom:8px;
+}
+
+.deck{
+  flex:1;
+  display:flex;
+  flex-wrap:nowrap;
+  gap:10px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:8px 6px 14px;
+}
+
+.dropArea{
+  flex:1;
+  display:flex;
+  flex-wrap:wrap;
+  align-content:flex-start;
+  gap:6px;
+  overflow:auto;
+  padding:6px;
+}
+
+.card{
+  width:140px;
+  min-width:140px;
+  height:110px;
+  background:white;
+  border:1.8px solid #b8b8b8;
+  border-radius:14px;
+  box-shadow:0 2px 7px rgba(0,0,0,.10);
+  padding:6px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  cursor:grab;
+  user-select:none;
+  position:relative;
+  z-index:500;
+  opacity:1 !important;
+}
+
+.card:active{cursor:grabbing;}
+
+.emoji{
+  font-size:38px;
+  line-height:1;
+}
+
+.text{
+  font-size:16px;
+  line-height:1.1;
+  text-align:center;
+  font-weight:800;
+}
+
+.slot .card,
+.dropArea .card{
+  width:86px;
+  min-width:86px;
+  height:38px;
+  border-radius:10px;
+  padding:3px 5px;
+  flex-direction:row;
+  gap:4px;
+  z-index:800;
+}
+
+.slot .emoji,
+.dropArea .emoji{
+  font-size:18px;
+}
+
+.slot .text,
+.dropArea .text{
+  font-size:9.5px;
+}
+
+.dragOver{
+  outline:3px dashed #7f9f68;
+  outline-offset:-5px;
+}
+
+.neverPanel{background:#f5f5f2;}
+.wishPanel{background:#f3f7ef;}
+
+.clearBtn{
+  position:fixed;
+  right:22px;
+  bottom:14px;
+  z-index:10000;
+  background:white;
+  border:2px solid var(--line);
+  border-radius:999px;
+  padding:8px 22px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.12);
+}
+
+.hintBtn{
+  position:fixed;
+  left:22px;
+  bottom:14px;
+  width:44px;
+  height:44px;
+  z-index:10000;
+  background:white;
+  border:2px solid var(--line);
+  border-radius:50%;
+  font-size:23px;
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.12);
+}
+
+.hintBox{
+  display:none;
+  position:fixed;
+  left:22px;
+  bottom:68px;
+  width:330px;
+  z-index:10001;
+  background:white;
+  border:2px solid var(--line);
+  border-radius:16px;
+  padding:14px 18px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  font-weight:800;
+  line-height:1.65;
+  font-size:15px;
+}
+
+.hintBox.open{display:block;}
+
+@media(max-width:1000px){
+  .app{grid-template-rows:64px 1fr 260px;}
+  h1{font-size:40px;}
+  .bottom{grid-template-columns:1fr 1fr;}
+  .activityPanel{grid-column:1 / -1;}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <div class="header">
+    <h1>My Usual Week</h1>
+    <div class="link">vk.com/school_english_kit</div>
+  </div>
+
+  <div class="plannerBox">
+    <table id="planner"></table>
+  </div>
+
+  <div class="bottom">
+    <div class="panel activityPanel">
+      <div class="panelTitle">Activity Cards</div>
+      <div class="deck" id="deck"></div>
+    </div>
+
+    <div class="panel neverPanel">
+      <div class="panelTitle">I never...</div>
+      <div class="dropArea zone" id="never"></div>
+    </div>
+
+    <div class="panel wishPanel">
+      <div class="panelTitle">I would like to...</div>
+      <div class="dropArea zone" id="wish"></div>
+    </div>
+  </div>
+
+</div>
+
+<button class="hintBtn" id="hintBtn">💡</button>
+<div class="hintBox" id="hintBox">
+  I usually ___ on Monday.<br>
+  I ___ at 7 am / 4 pm.<br>
+  I ___ in the morning / afternoon / evening.<br>
+  I never ___.<br>
+  I would like to ___.
+</div>
+
+<button class="clearBtn" id="clearBtn">CLEAR</button>
+
+<script>
+const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+
+const groups = [
+  {
+    period: "in the morning",
+    cls: "morning",
+    hours: ["6 am","7 am","8 am","9 am","10 am","11 am"]
+  },
+  {
+    period: "in the afternoon",
+    cls: "afternoon",
+    hours: ["12 pm","1 pm","2 pm","3 pm","4 pm"]
+  },
+  {
+    period: "in the evening",
+    cls: "evening",
+    hours: ["5 pm","6 pm","7 pm","8 pm","9 pm"]
+  },
+  {
+    period: "at night",
+    cls: "night",
+    hours: ["10 pm","11 pm","12 am"]
+  }
+];
+
+const activities = [
+  ["⏰","wake up"],
+  ["🛏️","get up"],
+  ["🥣","have breakfast"],
+  ["🪥","brush my teeth"],
+  ["👕","get dressed"],
+  ["🎒","go to school"],
+  ["🍎","have lunch"],
+  ["🏠","come home"],
+  ["📚","do homework"],
+  ["🍽️","have dinner"],
+  ["🚿","take a shower"],
+  ["🌙","go to bed"],
+  ["⚽","play football"],
+  ["🎾","play tennis"],
+  ["🏊","go swimming"],
+  ["🚲","ride a bike"],
+  ["🧒","play with friends"],
+  ["📺","watch TV"],
+  ["🎮","play computer games"],
+  ["📖","read a book"],
+  ["🎨","draw"],
+  ["🎵","listen to music"],
+  ["🇬🇧","have an English lesson"],
+  ["➕","have a Maths lesson"],
+  ["🎹","have a music lesson"],
+  ["💃","go to dance class"],
+  ["🖌️","go to art club"],
+  ["🏃","go to sports club"],
+  ["🧹","clean my room"],
+  ["🛒","go shopping"],
+  ["👵","visit grandma"],
+  ["🐕","walk the dog"],
+  ["🌳","go to the park"],
+  ["🧺","have a picnic"],
+  ["😌","relax"]
+];
+
+const planner = document.getElementById("planner");
+
+let html = "<tr><th class='periodHead'></th><th class='hourHead'>TIME</th>";
+days.forEach(day => html += `<th>${day}</th>`);
+html += "</tr>";
+
+groups.forEach(group => {
+  group.hours.forEach((hour, index) => {
+    html += "<tr>";
+
+    if(index === 0){
+      html += `
+        <td class="periodCell ${group.cls}" rowspan="${group.hours.length}">
+          <span class="periodText">${group.period}</span>
+        </td>`;
+    }
+
+    html += `<td class="hourCell ${group.cls}">${hour}</td>`;
+
+    days.forEach(day => {
+      html += `<td class="slot zone ${group.cls}" data-day="${day}" data-hour="${hour}"></td>`;
+    });
+
+    html += "</tr>";
+  });
+});
+
+planner.innerHTML = html;
+
+const deck = document.getElementById("deck");
+let copyCounter = 0;
+
+function createCard(emoji, text, id, master=true){
+  const card = document.createElement("div");
+  card.className = "card";
+  card.draggable = true;
+  card.id = id;
+  if(master) card.dataset.master = "true";
+  card.innerHTML = `<div class="emoji">${emoji}</div><div class="text">${text}</div>`;
+  addDrag(card);
+  return card;
+}
+
+function addDrag(card){
+  card.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", card.id);
+    card.style.opacity = "1";
+  });
+
+  card.addEventListener("dragend", () => {
+    card.style.opacity = "1";
+  });
+}
+
+activities.forEach((item, index) => {
+  deck.appendChild(createCard(item[0], item[1], "master-" + index, true));
+});
+
+document.querySelectorAll(".zone").forEach(zone => {
+  zone.addEventListener("dragover", e => {
+    e.preventDefault();
+    zone.classList.add("dragOver");
+  });
+
+  zone.addEventListener("dragleave", () => {
+    zone.classList.remove("dragOver");
+  });
+
+  zone.addEventListener("drop", e => {
+    e.preventDefault();
+    zone.classList.remove("dragOver");
+
+    const id = e.dataTransfer.getData("text/plain");
+    const original = document.getElementById(id);
+    if(!original) return;
+
+    if(original.dataset.master === "true"){
+      const clone = original.cloneNode(true);
+      clone.id = "copy-" + (++copyCounter);
+      delete clone.dataset.master;
+      clone.style.opacity = "1";
+      addDrag(clone);
+      zone.appendChild(clone);
+    } else {
+      original.style.opacity = "1";
+      zone.appendChild(original);
+    }
+  });
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.querySelectorAll(".card:not([data-master='true'])").forEach(card => card.remove());
+});
+
+document.getElementById("hintBtn").addEventListener("click", () => {
+  document.getElementById("hintBox").classList.toggle("open");
+});
+</script>
+</body>
+</html>
