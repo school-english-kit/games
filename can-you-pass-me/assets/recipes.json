@@ -1,0 +1,133 @@
+{
+  "title": "Can you pass me?",
+  "language": "en",
+  "layout": "Student A above Student B",
+  "rounds": [
+    {
+      "round": 1,
+      "studentA": {
+        "dish": "Fruit salad",
+        "image": "dishes/fruit-salad.png",
+        "ingredients": [
+          "mango",
+          "pineapple",
+          "coconut"
+        ]
+      },
+      "studentB": {
+        "dish": "Tomato salad",
+        "image": "dishes/tomato-salad.png",
+        "ingredients": [
+          "tomato",
+          "olive-oil",
+          "salt"
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "studentA": {
+        "dish": "Lemon cake",
+        "image": "dishes/lemon-cake.png",
+        "ingredients": [
+          "flour",
+          "butter",
+          "sugar",
+          "lemon"
+        ]
+      },
+      "studentB": {
+        "dish": "Bean soup",
+        "image": "dishes/bean-soup.png",
+        "ingredients": [
+          "beans",
+          "tomato",
+          "salt",
+          "pepper"
+        ]
+      }
+    },
+    {
+      "round": 3,
+      "studentA": {
+        "dish": "Pineapple cake",
+        "image": "dishes/pineapple-cake.png",
+        "ingredients": [
+          "pineapple",
+          "flour",
+          "butter",
+          "sugar"
+        ]
+      },
+      "studentB": {
+        "dish": "Fried beans",
+        "image": "dishes/fried-beans.png",
+        "ingredients": [
+          "beans",
+          "olive-oil",
+          "salt",
+          "pepper"
+        ]
+      }
+    }
+  ],
+  "foods": {
+    "lemon": {
+      "label": "lemon",
+      "image": "foods/lemon.png"
+    },
+    "beans": {
+      "label": "beans",
+      "image": "foods/beans.png"
+    },
+    "mango": {
+      "label": "mango",
+      "image": "foods/mango.png"
+    },
+    "butter": {
+      "label": "butter",
+      "image": "foods/butter.png"
+    },
+    "coconut": {
+      "label": "coconut",
+      "image": "foods/coconut.png"
+    },
+    "flour": {
+      "label": "flour",
+      "image": "foods/flour.png"
+    },
+    "pineapple": {
+      "label": "pineapple",
+      "image": "foods/pineapple.png"
+    },
+    "olive-oil": {
+      "label": "olive oil",
+      "image": "foods/olive-oil.png"
+    },
+    "sugar": {
+      "label": "sugar",
+      "image": "foods/sugar.png"
+    },
+    "salt": {
+      "label": "salt",
+      "image": "foods/salt.png"
+    },
+    "pepper": {
+      "label": "pepper",
+      "image": "foods/pepper.png"
+    },
+    "tomato": {
+      "label": "tomato",
+      "image": "foods/tomato.png"
+    }
+  },
+  "interface": {
+    "background": "background.png",
+    "playerPanel": "ui/player-panel.png",
+    "foodCard": "ui/food-card.png",
+    "recipePanel": "ui/recipe-panel.png",
+    "greenButton": "ui/button-green.png",
+    "orangeButton": "ui/button-orange.png",
+    "plate": "ui/plate.png"
+  }
+}

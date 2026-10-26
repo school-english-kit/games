@@ -1,0 +1,205 @@
+{
+  "png_count": 25,
+  "images": [
+    {
+      "file": "background.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGB",
+      "transparent": false,
+      "sha256": "54be5f004ad9d7a70d8e554af58dd13401da87a6d32fd6e1266a10575c13d4f5"
+    },
+    {
+      "file": "dishes/bean-soup.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "ee28fb995f1002c90ef1b65d3dbf3d70efa12c8bb0e8a4dc20e9bbb7343c992f"
+    },
+    {
+      "file": "dishes/fried-beans.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "b62e382ec14644626c528404b231069132191660cc142d97e10f8f821e5c7971"
+    },
+    {
+      "file": "dishes/fruit-salad.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "92a01bb0740348189a4d73b6d19d5763ea3674758ecfcae1815605d8ff14f572"
+    },
+    {
+      "file": "dishes/lemon-cake.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "128ae369a171ee13a38c8db61ad9aad1862f2c54664c1637eda3b7bcca7ebf30"
+    },
+    {
+      "file": "dishes/pineapple-cake.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "f01b49e092aa6c6c522609c619cca2e9b04c542e8907f751da124ecc5e2c0c81"
+    },
+    {
+      "file": "dishes/tomato-salad.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "d8e11c7a3943d318156c849b3bae4ace77324968a6f299e9df528dda76e3df8d"
+    },
+    {
+      "file": "foods/beans.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "03d777e7472f96a422fc44b0bfff39b275ad7136d16a2b3e5a5939f6f92fff88"
+    },
+    {
+      "file": "foods/butter.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "ce949091e174e959e5840470553f9f995f89c9b62a4ddef9c216b3600f54cad6"
+    },
+    {
+      "file": "foods/coconut.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "f50ad99e5ce3a51b932b5022f753a9c7e638a1ab4ee08609c73a1265577aca28"
+    },
+    {
+      "file": "foods/flour.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "0319a218b301d3b70689f12a83b97e2afba6c0fc54b6a2f156dbb25063406b9b"
+    },
+    {
+      "file": "foods/lemon.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "ee31cc2941772d0380bfe75dc7a2f8598baa4a7099e6031bc53e2775bb1f060b"
+    },
+    {
+      "file": "foods/mango.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "c2222ec62d4dd73f8c116217c15530ae124e9b708bb2a6c2e379e0810e94ee58"
+    },
+    {
+      "file": "foods/olive-oil.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "d7e5d28454f5a85a26d3d86027ce78bb5f1834258d21cf14d0058d687d9fe0c3"
+    },
+    {
+      "file": "foods/pepper.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "a41b5b7245a5752f69f2a7264d15fedff802521e6fa75ff9c2ffce46454d3c79"
+    },
+    {
+      "file": "foods/pineapple.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "83f77a84130eb3172a8a8ea6dbe6fd4a42175756426bd0fec2c6b03fca70a0b2"
+    },
+    {
+      "file": "foods/salt.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "c53c16d6a054224d9e530e6b0c6460bcb5faaff7b06acbedfbd1d4f825dcb475"
+    },
+    {
+      "file": "foods/sugar.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "12b45134f2919a89819a3d24d1fb0a88b9174ad84329c028c0c957213365049e"
+    },
+    {
+      "file": "foods/tomato.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "e508210a373b9913fef6bbc26985ecd1c4b66d30f001f79497f428ec54c9826f"
+    },
+    {
+      "file": "ui/button-green.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "bed56f038d56b3abb3adc265ae394ca0fdd02fa61ad4084b034a3484b414d49b"
+    },
+    {
+      "file": "ui/button-orange.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "39e2398453189a0790ab81fca04afdb4be66be978b381e73ba7853ad3d57f80d"
+    },
+    {
+      "file": "ui/food-card.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "transparent": false,
+      "sha256": "9537d1aac670cf3f1cef1dfb230d589697b0861775c127d86b2918f1a1010774"
+    },
+    {
+      "file": "ui/plate.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "6b2fcd6d5c2381da4e9f05346e15ae16859ebd2c59eacf66a0955127486335d7"
+    },
+    {
+      "file": "ui/player-panel.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "transparent": false,
+      "sha256": "232db251b15ece12baa9abf9cf4671b5e8af758513e35147d7d486048f620358"
+    },
+    {
+      "file": "ui/recipe-panel.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "659107e80ca5c705a0a1579780771ce93f3650f051947affded10ec7131effcf"
+    }
+  ]
+}
