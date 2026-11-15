@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f2df">
+  <title>Gerund or Infinitive: Grammar Sorting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#3d5728;
+      --paper:#fff7dc;
+      --sage:#dbe8b0;
+      --gold:#f6dc87;
+      --cream:#f8f0dc;
+      --shadow:0 10px 20px rgba(49,66,35,.10);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:'Playpen Sans','Trebuchet MS',sans-serif;color:var(--ink);background:#fbf2d8}
+    button,a{font:inherit}
+    button{cursor:pointer}
+    body{
+      min-height:100dvh;
+      background:url('assets/background.png') center center/cover no-repeat fixed;
+      overflow:hidden;
+    }
+    .shell{
+      position:relative;
+      height:100dvh;
+      max-width:1720px;
+      margin:0 auto;
+      padding:clamp(10px,1.5vw,24px) clamp(16px,1.8vw,30px) clamp(10px,1.2vw,18px);
+      display:grid;
+      grid-template-rows:minmax(132px,22vh) minmax(0,1fr);
+      gap:clamp(10px,1.1vh,18px);
+    }
+    .top-actions{
+      position:absolute;
+      top:calc(env(safe-area-inset-top, 0px) + clamp(10px,1.5vw,24px));
+      right:clamp(16px,1.8vw,30px);
+      display:flex;
+      align-items:flex-start;
+      gap:clamp(8px,1vw,14px);
+      z-index:5;
+    }
+    .image-button{
+      display:block;
+      background:none;
+      border:0;
+      padding:0;
+      line-height:0;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+      width:clamp(128px,12vw,172px);
+    }
+    .image-button img{display:block;width:100%;height:auto;object-fit:contain}
+    .image-button:hover{transform:translateY(-2px)}
+    .image-button:active{transform:translateY(1px)}
+    .image-button:focus-visible{outline:3px solid #456f35;border-radius:18px}
+    .image-button[hidden]{display:none!important}
+
+    .header{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:0;
+      padding-top:clamp(4px,.6vh,8px);
+    }
+    .banner{
+      display:block;
+      width:min(940px, 58vw);
+      max-width:100%;
+      height:auto;
+      max-height:100%;
+      object-fit:contain;
+    }
+
+    .board{
+      display:grid;
+      grid-template-columns:minmax(310px,1fr) minmax(260px,320px) minmax(310px,1fr);
+      grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+      gap:clamp(10px,1.3vw,24px) clamp(14px,1.5vw,28px);
+      align-items:center;
+      justify-items:center;
+      min-height:0;
+      padding-bottom:2px;
+    }
+    .zone{
+      position:relative;
+      width:min(100%, 470px);
+      aspect-ratio:726/530;
+      max-height:100%;
+      isolation:isolate;
+      cursor:pointer;
+      transition:filter .15s ease;
+      outline:none;
+    }
+    .zone::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:url('ui/group_panel.png') center/contain no-repeat;
+      z-index:-1;
+      pointer-events:none;
+    }
+    .zone:focus-visible{filter:drop-shadow(0 0 7px rgba(86,132,66,.9))}
+    .zone.over{filter:drop-shadow(0 0 10px rgba(114,170,87,.95))}
+    .zone.wrong{filter:drop-shadow(0 0 10px rgba(209,108,82,.9))}
+
+    .zone-ing{grid-area:1/1}
+    .zone-to{grid-area:1/3}
+    .zone-bare{grid-area:2/1}
+    .zone-both{grid-area:2/3}
+
+    .zone-inner{
+      position:absolute;
+      inset:14% 9% 12% 9%;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      min-width:0;
+    }
+    .zone-heading{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin:0 1% 4px;
+      min-height:38px;
+    }
+    .zone-title{
+      font-weight:800;
+      line-height:1.18;
+      font-size:clamp(16px,1.65vw,29px);
+      overflow-wrap:anywhere;
+      max-width:84%;
+    }
+    .count{
+      flex:0 0 auto;
+      font-size:clamp(12px,.95vw,17px);
+      font-weight:800;
+      padding:4px 9px;
+      border-radius:999px;
+      background:#dcecb7;
+      line-height:1;
+      white-space:nowrap;
+      margin-top:2px;
+    }
+    .tags{
+      flex:1;
+      min-height:0;
+      display:flex;
+      flex-wrap:wrap;
+      align-content:flex-start;
+      align-items:flex-start;
+      gap:clamp(4px,.48vw,8px);
+      overflow:auto;
+      overscroll-behavior:contain;
+      padding:2px 3px 6px;
+      scrollbar-width:thin;
+      scrollbar-color:#acc790 transparent;
+    }
+    .tag{
+      border:1px solid #d9c888;
+      border-radius:4px 10px 7px 8px;
+      padding:clamp(4px,.42vw,8px) clamp(7px,.52vw,10px);
+      max-width:100%;
+      overflow-wrap:anywhere;
+      background:#fff0b7;
+      color:#34492b;
+      box-shadow:1px 2px 0 #d3b96a,0 2px 5px rgba(77,86,48,.15);
+      font-size:clamp(11px,.95vw,15px);
+      font-weight:700;
+      line-height:1.22;
+      transform:rotate(-1deg);
+      text-align:center;
+      cursor:pointer;
+    }
+    .tag:nth-child(3n){transform:rotate(1.3deg);background:#e6efc5;border-color:#becf9a}
+    .tag:nth-child(3n+2){transform:rotate(-1.3deg);background:#ffefcf}
+    .tag:hover{filter:brightness(.98);transform:translateY(-2px)}
+    .tag:focus-visible{outline:2px solid #477b31;outline-offset:2px}
+
+    .center{
+      grid-area:1/2/3/3;
+      width:100%;
+      height:100%;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:clamp(8px,1.2vh,14px);
+      text-align:center;
+      padding:0 clamp(4px,.5vw,10px);
+    }
+    .progress{
+      font-size:clamp(16px,1.25vw,24px);
+      font-weight:800;
+      background:rgba(255,249,229,.95);
+      border:2px solid #d5dfa6;
+      border-radius:999px;
+      padding:8px 16px;
+      box-shadow:0 4px 8px rgba(82,101,44,.08);
+    }
+    .active-sticker{
+      width:min(100%, 360px);
+      min-height:clamp(118px,21vh,190px);
+      display:grid;
+      place-items:center;
+      position:relative;
+      touch-action:none;
+      user-select:none;
+      cursor:grab;
+      padding:14px 24px;
+      font-size:clamp(24px,2.4vw,38px);
+      font-weight:800;
+      line-height:1.18;
+      text-align:center;
+      background:#fff0b8;
+      border:1px solid #e2c67e;
+      border-radius:9px 24px 13px 19px;
+      box-shadow:5px 6px 0 #e2cd8f,0 10px 18px rgba(119,107,74,.20);
+      transform:rotate(-3deg);
+      overflow-wrap:anywhere;
+    }
+    .active-sticker::after{
+      content:'';
+      position:absolute;
+      right:0;top:0;
+      border-top:34px solid #f6dc89;
+      border-left:34px solid transparent;
+      border-radius:0 18px 0 0;
+      opacity:.8;
+      pointer-events:none;
+    }
+    .active-sticker:active{cursor:grabbing}
+    .active-sticker:focus-visible{outline:3px solid #447b39}
+    .drag-ghost{
+      position:fixed;
+      z-index:500;
+      pointer-events:none;
+      transform:rotate(2deg) scale(1.04);
+      opacity:.95;
+      margin:0;
+    }
+    .hint{
+      font-size:clamp(14px,1.05vw,17px);
+      line-height:1.35;
+      max-width:320px;
+      font-weight:700;
+      margin-top:-2px;
+    }
+    .feedback{
+      font-size:clamp(14px,1.25vw,18px);
+      min-height:26px;
+      font-weight:800;
+    }
+    .feedback.bad{color:#b0503f}
+
+    .finish{
+      width:100%;
+      max-width:340px;
+      border:2px solid #b9c98b;
+      background:rgba(255,248,231,.94);
+      border-radius:22px;
+      padding:18px 14px 14px;
+      box-shadow:var(--shadow);
+      display:none;
+    }
+    .finish h2{margin:0 0 8px;font-size:clamp(22px,2vw,28px)}
+    .finish p{margin:4px 0;font-size:clamp(14px,1.08vw,16px);line-height:1.4}
+    .finish .prompt{font-size:12px;font-weight:700;margin-top:8px}
+    .finish .image-button{margin:12px auto 0;width:min(100%,180px)}
+    .center.done .active-sticker,
+    .center.done .hint,
+    .center.done .feedback,
+    .center.done .progress{display:none}
+    .center.done .finish{display:block}
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:900;
+      background:rgba(27,45,30,.56);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      backdrop-filter:blur(3px);
+    }
+    .overlay.show{display:flex}
+    .popup{
+      width:min(94vw,740px);
+      aspect-ratio:784/502;
+      position:relative;
+      background:url('ui/question_popup.png') center/contain no-repeat;
+      filter:drop-shadow(0 12px 24px rgba(18,39,18,.30));
+    }
+    .popup-close{
+      position:absolute;
+      top:2%;
+      right:3%;
+      width:14%;
+      height:23%;
+      border:0;
+      background:transparent;
+      border-radius:50%;
+      cursor:pointer;
+      z-index:4;
+    }
+    .popup-close:focus-visible{outline:3px solid #2e6525}
+
+    .popup-content{
+      position:absolute;
+      left:15%;right:14%;top:30.5%;bottom:15%;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:6px;
+      text-align:center;
+      padding:2px 8px;
+      overflow:hidden;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      box-shadow:none;
+      --talk-scale:1;
+    }
+    .question{
+      font-size:calc(clamp(16px,1.65vw,24px)*var(--talk-scale));
+      line-height:1.3;
+      font-weight:700;
+      margin:0;
+    }
+    .question.small{font-size:calc(clamp(15px,1.4vw,21px)*var(--talk-scale))}
+    .popup-content.two{
+      justify-content:center;
+      gap:8px;
+      padding:0 8px;
+    }
+    .popup-content.two .question{
+      font-size:calc(clamp(15px,1.38vw,20px)*var(--talk-scale));
+      line-height:1.24;
+    }
+    .pair{width:100%;padding:0 0 6px;border-bottom:1px dotted rgba(120,145,88,.35)}
+    .pair:last-child{border-bottom:0;padding-bottom:0}
+    .pair-label{
+      font-size:calc(clamp(13px,1.08vw,17px)*var(--talk-scale));
+      font-weight:800;
+      margin-bottom:3px;
+    }
+    .explanation{
+      font-size:calc(clamp(11px,.92vw,14px)*var(--talk-scale));
+      line-height:1.25;
+      font-weight:700;
+      color:#61723a;
+      margin-top:3px;
+    }
+
+    @media (max-width:980px) and (orientation:portrait){
+      body{overflow:auto}
+      .shell{
+        height:auto;
+        min-height:100dvh;
+        grid-template-rows:auto auto;
+        gap:10px;
+        padding:8px 10px 18px;
+      }
+      .top-actions{
+        position:static;
+        justify-content:flex-end;
+        gap:8px;
+        margin-bottom:2px;
+      }
+      .image-button{width:min(34vw,160px)}
+      .header{padding-top:2px}
+      .banner{width:min(96%, 660px)}
+      .board{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        grid-template-rows:auto auto auto;
+        gap:12px 12px;
+        align-items:start;
+      }
+      .zone{width:100%;max-width:none}
+      .zone-ing{grid-area:1/1}
+      .zone-to{grid-area:1/2}
+      .center{grid-area:2/1/3/3;min-height:160px;padding:2px 0}
+      .zone-bare{grid-area:3/1}
+      .zone-both{grid-area:3/2}
+      .zone-inner{inset:14% 8.5% 11% 8.5%}
+      .zone-heading{min-height:34px;margin-bottom:3px}
+      .zone-title{font-size:clamp(17px,3vw,24px);max-width:81%}
+      .count{font-size:clamp(12px,2.3vw,16px);padding:4px 8px}
+      .tag{font-size:clamp(11px,2.15vw,14px);padding:4px 7px}
+      .progress{font-size:clamp(16px,3.5vw,22px);padding:7px 14px}
+      .active-sticker{width:min(72vw,360px);min-height:118px;font-size:clamp(24px,5vw,34px)}
+      .hint{font-size:15px;max-width:76vw}
+      .question{font-size:calc(clamp(14px,3vw,22px)*var(--talk-scale))}
+      .popup-content{left:15%;right:14%;top:30.5%;bottom:15%;padding:2px 7px}
+    }
+    @media (max-width:700px) and (orientation:portrait){
+      .shell{padding:8px 10px 18px}
+      .top-actions{flex-wrap:wrap;row-gap:6px}
+      .image-button{width:min(39vw,152px)}
+      .banner{width:min(98%, 600px)}
+      .board{gap:10px}
+      .zone-title{font-size:clamp(15px,3.2vw,20px)}
+      .count{font-size:clamp(11px,2.4vw,14px)}
+      .tag{font-size:clamp(10px,2.45vw,13px)}
+      .center{min-height:150px}
+      .active-sticker{width:min(74vw,320px);min-height:106px;font-size:clamp(21px,5.2vw,30px)}
+      .hint{font-size:13px}
+      .popup{width:min(95vw,620px)}
+      .popup-content{left:14%;right:13%;top:30%;bottom:14.5%}
+      .popup-content.two{gap:4px}
+      .popup-content.two .question{font-size:calc(clamp(11px,2.9vw,16px)*var(--talk-scale))}
+      .pair-label{font-size:calc(clamp(11px,2.5vw,15px)*var(--talk-scale))}
+      .question{font-size:calc(clamp(13px,3.3vw,18px)*var(--talk-scale))}
+      .explanation{font-size:calc(clamp(10px,2.3vw,13px)*var(--talk-scale))}
+    }
+    @media (max-width:520px) and (orientation:portrait){
+      .shell{padding:8px 8px 16px}
+      .top-actions{justify-content:flex-end;gap:7px}
+      .image-button{width:min(39vw,145px)}
+      .header{margin-top:2px}
+      .banner{width:min(100%, 620px)}
+      .board{gap:9px}
+      .zone-inner{inset:13.5% 8.8% 11.4% 8.8%}
+      .zone-heading{min-height:28px;gap:6px}
+      .zone-title{font-size:clamp(13px,3vw,17px)}
+      .count{font-size:clamp(10px,2.5vw,13px);padding:3px 7px}
+      .tag{font-size:clamp(9.5px,2.5vw,12px);padding:4px 6px;line-height:1.16}
+      .center{min-height:142px;gap:8px}
+      .progress{font-size:clamp(14px,4vw,18px);padding:6px 13px}
+      .active-sticker{width:min(78vw,300px);min-height:96px;font-size:clamp(18px,6vw,28px);padding:12px 15px}
+      .hint{font-size:12px;max-width:82vw}
+      .popup{width:min(96vw,580px)}
+      .popup-content{left:13.5%;right:12.5%;top:30%;bottom:14%;padding:0 3px}
+      .popup-content.two{gap:3px}
+      .popup-content.two .question{font-size:calc(clamp(10px,2.9vw,14px)*var(--talk-scale))}
+      .question{font-size:calc(clamp(12px,3.6vw,17px)*var(--talk-scale));line-height:1.26}
+      .question.small{font-size:calc(clamp(11px,3.2vw,15px)*var(--talk-scale))}
+      .pair{padding-bottom:3px}
+      .pair-label{font-size:calc(clamp(10px,2.8vw,14px)*var(--talk-scale))}
+      .explanation{font-size:calc(clamp(9px,2.5vw,12px)*var(--talk-scale))}
+      .finish{padding:14px 10px 12px}
+      .finish h2{font-size:20px}
+      .finish p{font-size:13px}
+    }
+    @media (max-width:380px) and (orientation:portrait){
+      .zone-title{font-size:12px}
+      .count{font-size:10px;padding:2px 6px}
+      .tag{font-size:9px;padding:3px 5px}
+      .active-sticker{width:min(82vw,286px)}
+      .image-button{width:min(40vw,138px)}
+    }
+    @media (max-height:690px) and (min-width:981px){
+      .banner{width:min(860px,54vw)}
+      .zone{width:min(100%, 440px)}
+      .active-sticker{min-height:108px;width:min(100%,320px)}
+      .hint{font-size:13px}
+    }
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+  
+/* v4: Geometry is tied to the image ratio; no stretching of picture layers. */
+html,body{height:100%;overflow:hidden}
+body{overflow:hidden;-webkit-text-size-adjust:100%}
+.shell{height:100dvh;min-height:0;max-width:1740px;grid-template-rows:minmax(0,22%) minmax(0,1fr);gap:clamp(6px,1vh,12px);padding:clamp(8px,1.1vh,16px) clamp(10px,1.6vw,24px)}
+.header{align-items:center;padding:0;min-width:0}
+.banner{width:min(66vw,1080px);max-height:100%;height:auto;object-fit:contain}
+.top-actions{top:clamp(8px,1.1vh,16px);right:clamp(10px,1.6vw,24px)}
+.top-actions .image-button{width:clamp(100px,11vw,160px)}
+.board{min-height:0;min-width:0;grid-template-columns:minmax(0,1fr) minmax(0, 26%) minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(6px,.9vh,12px) clamp(6px,.8vw,12px);padding:0}
+.zone{height:100%;width:auto;max-width:100%;max-height:100%;aspect-ratio:726 / 530;min-height:0;min-width:0;align-self:center;justify-self:center;}
+.zone-inner{inset:24% 12% 14% 12%}
+.zone-heading{align-items:center;gap:5px;margin:0 0 4px;min-height:0}
+.zone-title{font-size:clamp(13px,1.25vw,20px);max-width:80%;line-height:1.2}
+.count{font-size:clamp(11px,.9vw,14px);padding:3px 7px;margin:0}
+.tags{padding:3px 1px 6px;gap:clamp(3px,.35vw,6px);overflow:auto}
+.tag,.tag:link,.tag:visited,.tag:active{color:#000!important;-webkit-text-fill-color:#000!important;appearance:none;-webkit-appearance:none}
+.tag{font-size:clamp(10px,.85vw,13px);padding:clamp(3px,.32vw,5px) clamp(5px,.45vw,8px)}
+.active-sticker,.active-sticker:active,.active-sticker:focus{color:#000!important;-webkit-text-fill-color:#000!important;appearance:none;-webkit-appearance:none}
+.center{min-height:0;gap:clamp(6px,1vh,12px);padding:0 3px}
+.progress{font-size:clamp(12px,1.1vw,18px);padding:5px 12px}
+.active-sticker{width:min(100%,330px);min-height:clamp(90px,19vh,165px);font-size:clamp(19px,2vw,31px)}
+.hint{font-size:clamp(11px,.95vw,15px);margin-top:0;max-width:100%;}
+.feedback{min-height:18px;font-size:clamp(11px,.95vw,15px)}
+.popup{width:min(92vw, calc(88dvh * 784 / 502), 840px);aspect-ratio:784/502;background-size:100% 100%}
+.popup::before{content:none!important;display:none!important}
+.popup-content{left:15%;right:14%;top:31%;bottom:15%;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;gap:clamp(2px,.6vh,7px);padding:0!important;min-height:0}
+.popup-content.two{gap:clamp(2px,.65vh,8px)}
+.popup-content .question{font-size:calc(clamp(15px,1.65vw,24px) * var(--talk-scale, 1));line-height:1.25}
+.popup-content.two .question{font-size:calc(clamp(14px,1.33vw,19px) * var(--talk-scale, 1));line-height:1.22}
+.popup-content.two .pair{padding-bottom:clamp(2px,.5vh,7px)}
+.popup-content.two .pair-label{font-size:calc(clamp(12px,1vw,16px) * var(--talk-scale, 1));margin-bottom:2px}
+.popup-content.two .explanation{font-size:calc(clamp(10px,.83vw,13px) * var(--talk-scale, 1));margin-top:2px}
+@media(max-width:980px) and (orientation:portrait){
+ html,body,body{height:100%;overflow:hidden!important}
+ .shell{height:100dvh;min-height:0;grid-template-rows:minmax(0,15%) minmax(0,1fr) minmax(0,8%);gap:clamp(3px,.5vh,7px);padding:calc(env(safe-area-inset-top, 0px) + 5px) 7px calc(env(safe-area-inset-bottom, 0px) + 5px)}
+ .top-actions{position:static;grid-row:3;justify-content:flex-end;align-items:center;align-self:center;gap:8px;margin:0;padding-right:6px;z-index:5}
+ .top-actions .image-button{width:min(29vw,124px);max-height:100%;}
+ .top-actions .image-button img{max-height:min(7vh,58px);object-fit:contain}
+ .header{grid-row:1;align-items:center;margin:0;padding:0}
+ .banner{height:auto;max-height:100%;width:min(100%,640px)}
+ .board{grid-row:2;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(0, .72fr) minmax(0,1fr);gap:clamp(3px,.5vh,8px) clamp(3px,1vw,8px);min-height:0;align-items:center;justify-items:center}
+ .zone{height:auto;width:min(100%, calc((100dvh - 185px)*.33));max-height:100%;aspect-ratio:726/530}
+ .zone-ing{grid-area:1/1}.zone-to{grid-area:1/2}.zone-bare{grid-area:3/1}.zone-both{grid-area:3/2}
+ .zone-inner{inset:24% 12% 14% 12%}
+ .zone-heading{min-height:0;margin:0 0 2px;gap:3px}
+ .zone-title{font-size:clamp(10px,2.5vw,17px);line-height:1.15;max-width:78%}
+ .count{font-size:clamp(9px,2.1vw,12px);padding:2px 5px}
+ .tags{gap:3px;padding:2px 1px 4px}
+ .tag{font-size:clamp(9px,2.3vw,12px);padding:3px 4px;line-height:1.13}
+ .center{grid-area:2/1/3/3;min-height:0;gap:clamp(3px,.55vh,7px);justify-content:center}
+ .progress{font-size:clamp(12px,3.2vw,17px);padding:3px 9px}
+ .active-sticker{min-height:0;height:min(12vh,100px);width:min(58vw,260px);font-size:clamp(18px,4.3vw,26px);padding:9px 12px}
+ .hint{font-size:clamp(10px,2.7vw,12px);line-height:1.2;margin:0}
+ .feedback{min-height:0;font-size:clamp(10px,2.7vw,12px)}
+ .popup{width:min(96vw, calc(78dvh * 784 / 502), 780px)}
+ .popup-content{left:14%;right:13%;top:32%;bottom:16%;}
+ .popup-content .question{font-size:calc(clamp(13px,3vw,19px)*var(--talk-scale,1))}
+ .popup-content.two .question{font-size:calc(clamp(12px,2.6vw,17px)*var(--talk-scale,1))}
+ .popup-content.two .pair-label{font-size:calc(clamp(11px,2.5vw,15px)*var(--talk-scale,1))}
+ .popup-content.two .explanation{font-size:calc(clamp(10px,2.2vw,12px)*var(--talk-scale,1))}
+ .finish{padding:9px 8px;max-width:320px}
+ .finish h2{font-size:clamp(15px,4vw,21px);margin:0 0 5px}
+ .finish p{font-size:clamp(10px,2.7vw,14px)}
+ .finish .prompt{font-size:clamp(9px,2.3vw,12px);margin-top:4px}
+ .finish .image-button{width:min(32vw,130px);margin:6px auto 0}
+}
+@media(max-width:420px) and (orientation:portrait){
+ .shell{grid-template-rows:minmax(0,13%) minmax(0,1fr) minmax(0,7%)}
+ .zone{width:100%;height:auto;max-height:100%;}
+ .zone-inner{inset:24% 12% 14% 12%}
+ .zone-title{font-size:clamp(10px,2.8vw,13px);max-width:78%}
+ .count{font-size:10px;padding:2px 5px}
+ .tag{font-size:clamp(9px,2.4vw,11px);padding:3px 4px}
+ .top-actions .image-button{width:min(29vw,118px)}
+ .top-actions .image-button img{max-height:min(6vh,51px)}
+ .popup-content{top:31%;bottom:17%;left:14.5%;right:12.5%}
+}
+@media(max-height:640px) and (min-width:981px){
+ .shell{grid-template-rows:minmax(0,19%) minmax(0,1fr)}
+ .banner{width:min(56vw,880px)}
+ .zone-inner{inset:25% 12% 14% 12%}
+ .zone-title{font-size:clamp(11px,1.1vw,17px)}
+ .active-sticker{min-height:80px}
+}
+
+@media(max-width:980px) and (orientation:landscape){
+ .banner{width:min(52vw,620px)}
+ .top-actions .image-button{width:min(11vw,110px)}
+ .shell{grid-template-rows:minmax(0,22%) minmax(0,1fr)}
+ .zone-title{font-size:clamp(10px,1.6vw,15px)}
+ .count{font-size:10px;padding:2px 5px}
+ .tag{font-size:10px;padding:3px 4px}
+ .active-sticker{min-height:clamp(76px,17vh,130px);font-size:clamp(18px,2vw,24px)}
+ .hint{font-size:11px}
+}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="top-actions">
+      <a href="https://vk.ru/school_english_kit" target="_blank" rel="noopener noreferrer" class="image-button" aria-label="More materials">
+        <img src="ui/button_more_materials.png" alt="More materials">
+      </a>
+      <button type="button" id="restart" class="image-button" aria-label="Restart">
+        <img src="ui/button_restart.png" alt="Restart">
+      </button>
+    </div>
+
+    <header class="header">
+      <img class="banner" src="assets/header.png" alt="Gerund or Infinitive: Grammar Sorting. Sort the stickers into four groups. Then click on any sticker, read the question and answer it.">
+    </header>
+
+    <main class="board" aria-label="Grammar sorting game board">
+      <section class="zone zone-ing" data-type="ing" tabindex="0" aria-label="Gerund ing group">
+        <div class="zone-inner">
+          <div class="zone-heading"><div class="zone-title">Gerund (-ing)</div><div class="count">0</div></div>
+          <div class="tags" aria-live="polite"></div>
+        </div>
+      </section>
+      <section class="zone zone-to" data-type="to" tabindex="0" aria-label="To-infinitive group">
+        <div class="zone-inner">
+          <div class="zone-heading"><div class="zone-title">To-infinitive</div><div class="count">0</div></div>
+          <div class="tags" aria-live="polite"></div>
+        </div>
+      </section>
+      <section class="zone zone-bare" data-type="bare" tabindex="0" aria-label="Without to group">
+        <div class="zone-inner">
+          <div class="zone-heading"><div class="zone-title">Without to</div><div class="count">0</div></div>
+          <div class="tags" aria-live="polite"></div>
+        </div>
+      </section>
+      <section class="zone zone-both" data-type="both" tabindex="0" aria-label="Both forms group">
+        <div class="zone-inner">
+          <div class="zone-heading"><div class="zone-title">Both forms</div><div class="count">0</div></div>
+          <div class="tags" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="center" id="center" aria-live="polite">
+        <div class="progress" id="progress">0 / 51 sorted</div>
+        <button type="button" class="active-sticker" id="current" aria-label="Current sticker"></button>
+        <div class="hint">Drag the sticker or tap a group.</div>
+        <div class="feedback" id="feedback" aria-live="assertive"></div>
+
+        <div class="finish">
+          <h2>Your result</h2>
+          <p id="result"></p>
+          <p class="prompt">Click on the sorted stickers to practise speaking again.</p>
+          <button type="button" id="play-again" class="image-button" aria-label="Start again">
+            <img src="ui/button_start_again.png" alt="Start again">
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="overlay" id="overlay" role="presentation">
+    <div class="popup" role="dialog" aria-modal="true" aria-label="Let's talk! Question">
+      <button class="popup-close" id="close-popup" type="button" aria-label="Close question"></button>
+      <div class="popup-content" id="popup-content"></div>
+    </div>
+  </div>
+
+  <script>
+  (()=>{
+    'use strict';
+    const ing=[
+      ['enjoy','What do you enjoy doing after school?'],["don’t mind","What household chores don’t you mind doing?"],['dislike','What do you dislike doing at school?'],['avoid','What do you try to avoid doing before bed?'],['appreciate','Do you appreciate your friends helping you with homework?'],['be used to','Are you used to getting up early?'],['consider','Have you ever considered learning a new language?'],['deny','Have you ever denied doing something wrong?'],['fancy','Do you fancy going out with your friends this weekend?'],['imagine','Can you imagine living without your phone?'],['miss','What do you miss doing during the school holidays?'],['suggest','What do you suggest doing on a rainy day?'],['practise','What skill do you practise regularly?'],['prevent ... from','What prevents you from spending more time outdoors?'],['spend time/money on','What do you spend most of your pocket money on?'],['How about ...?','How about trying a new hobby this month?'],["it’s worth",'What place in your city is worth visiting?'],["can’t stand",'What can’t you stand doing?'],['have difficulty','What do you have difficulty remembering?'],['look forward to','What are you looking forward to doing this weekend?'],["can’t help",'What funny videos can’t you help laughing at?'],['after prepositions','What do you usually do before going to bed?']
+    ];
+    const to=[['would like','What country would you like to visit?'],['would prefer','Would you prefer to study online or at school?'],['would love','What famous person would you love to meet?'],['too + adjective','Are you ever too tired to do your homework?'],['adjective + enough','Are you old enough to travel alone?'],['ask','What do your parents usually ask you to do?'],['decide','What have you recently decided to learn?'],['explain','Can you explain how to make your favourite snack?'],['want','What do you want to do next weekend?'],['hope','What do you hope to achieve this school year?'],['expect','What do you expect to do after school today?'],['promise','What do you often promise to do but forget?'],['refuse','What food do you refuse to eat?'],['plan','What do you plan to do during your next holidays?']];
+    const bare=[['make someone','What do your parents make you do at home?'],['let someone','What do your parents let you do at weekends?'],['can / could','What can you do really well?'],['must / should','What should teenagers do to stay healthy?']];
+    const both=[
+      ['like','What do you like doing with your friends?','What do you like to do first when you get home?','нравится процесс','привычка'],
+      ['love','What do you love doing on holiday?','How do you love to celebrate your birthday?','любимое занятие','предпочитаемый способ'],
+      ['hate','What do you hate doing around the house?','Do you hate to tell people bad news?','неприятное занятие','неприятно делать'],
+      ['prefer','Do you prefer studying alone or with friends?','Would you prefer to watch a film or play a game tonight?','общее предпочтение','конкретный выбор'],
+      ['continue','Do you continue using your phone after bedtime?','Would you like to continue to study English after school?','продолжать действие','то же значение'],
+      ['begin','When did you begin learning English?','When did you begin to use social media?','начало действия','то же значение'],
+      ['start','When did you start using your first smartphone?','What time do you usually start to do your homework?','начало действия','то же значение'],
+      ['stop','What bad habit would you like to stop doing?','When you’re walking home, do you ever stop to buy a snack?','прекратить действие','остановиться с целью'],
+      ['forget','Will you ever forget meeting your best friend for the first time?','What do you often forget to take to school?','память о прошлом','забыть сделать'],
+      ['remember','Do you remember going to school for the first time?','What do you always remember to do before leaving home?','воспоминание','не забыть сделать'],
+      ['try','Have you ever tried learning English through video games?','What difficult skill are you trying to learn at the moment?','попробовать способ','прилагать усилия']
+    ];
+
+    const deck=[
+      ...ing.map(([t,q])=>({t,q,c:'ing'})),
+      ...to.map(([t,q])=>({t,q,c:'to'})),
+      ...bare.map(([t,q])=>({t,q,c:'bare'})),
+      ...both.map(([t,q1,q2,meaning1,meaning2])=>({t,q1,q2,meaning1,meaning2,c:'both'}))
+    ];
+
+    const $=id=>document.getElementById(id);
+    const zones=[...document.querySelectorAll('.zone')];
+    let items=[],i=0,firstTry=0,errors=0,wrongOnThis=false,drag=null,ghost=null,lastFocus=null;
+
+    function shuffle(a){
+      for(let j=a.length-1;j>0;j--){
+        const k=Math.floor(Math.random()*(j+1));
+        [a[j],a[k]]=[a[k],a[j]];
+      }
+      return a;
+    }
+
+    function restart(){
+      items=shuffle([...deck]);
+      i=0; firstTry=0; errors=0; wrongOnThis=false;
+      zones.forEach(z=>{
+        z.querySelector('.tags').replaceChildren();
+        z.querySelector('.count').textContent='0';
+        z.classList.remove('over','wrong');
+      });
+      $('center').classList.remove('done');
+      $('feedback').textContent='';
+      $('feedback').classList.remove('bad');
+      $('overlay').classList.remove('show');
+      $('current').hidden=false;
+      render();
+    }
+
+    function render(){
+      const isDone=i>=items.length;
+      $('progress').textContent=`${i} / ${items.length} sorted`;
+      $('center').classList.toggle('done',isDone);
+      if(isDone){
+        $('result').textContent=`${firstTry} / ${items.length} correct on the first try · ${errors} ${errors===1?'mistake':'mistakes'}.`;
+        return;
+      }
+      $('current').textContent=items[i].t;
+      $('feedback').textContent='';
+      $('feedback').classList.remove('bad');
+      wrongOnThis=false;
+    }
+
+    function choose(z){
+      if(i>=items.length || $('overlay').classList.contains('show')) return;
+      const item=items[i];
+      if(z.dataset.type!==item.c){
+        errors++; wrongOnThis=true;
+        $('feedback').textContent='Not quite! Try another group.';
+        $('feedback').classList.add('bad');
+        z.classList.add('wrong');
+        setTimeout(()=>z.classList.remove('wrong'),360);
+        return;
+      }
+      if(!wrongOnThis) firstTry++;
+      const tag=document.createElement('button');
+      tag.type='button';
+      tag.className='tag';
+      tag.textContent=item.t;
+      tag.setAttribute('aria-label',`${item.t}: open speaking question`);
+      tag.addEventListener('click',e=>{e.stopPropagation();openQuestion(item)});
+      tag.addEventListener('pointerdown',e=>e.stopPropagation());
+      z.querySelector('.tags').append(tag);
+      z.querySelector('.count').textContent=z.querySelectorAll('.tag').length;
+      i++;
+      render();
+    }
+
+    zones.forEach(z=>{
+      z.addEventListener('click',e=>{
+        if(e.target.closest('.tag')) return;
+        choose(z);
+      });
+      z.addEventListener('keydown',e=>{
+        if(e.target!==z) return;
+        if(e.key==='Enter'||e.key===' '){
+          e.preventDefault();
+          choose(z);
+        }
+      });
+    });
+
+    function textEl(name,text,cl){
+      const el=document.createElement(name);
+      if(cl) el.className=cl;
+      el.textContent=text;
+      return el;
+    }
+
+    function fitPopupText(){
+      const box=$('popup-content');
+      box.style.setProperty('--talk-scale','1');
+      let scale=1;
+      // All text must be visible without scrolling, including both forms.
+      while(scale>.58 && (box.scrollHeight>box.clientHeight || box.scrollWidth>box.clientWidth || (box.lastElementChild && box.lastElementChild.getBoundingClientRect().bottom>box.getBoundingClientRect().bottom-2))){
+        scale-=.035;
+        box.style.setProperty('--talk-scale',String(scale));
+      }
+    }
+    window.addEventListener('resize',()=>{
+      if($('overlay').classList.contains('show')) fitPopupText();
+    });
+
+    function openQuestion(item){
+      lastFocus=document.activeElement;
+      const box=$('popup-content');
+      box.replaceChildren();
+      box.classList.toggle('two',item.c==='both');
+      if(item.c==='both'){
+        [[item.q1,item.meaning1,'-ing'],[item.q2,item.meaning2,'to + infinitive']].forEach(([q,meaning,label])=>{
+          const part=textEl('div','', 'pair');
+          part.append(
+            textEl('div',label,'pair-label'),
+            textEl('p',q,'question'),
+            textEl('div',`(${meaning})`,'explanation')
+          );
+          box.append(part);
+        });
+      } else {
+        const q=textEl('p',item.q,'question');
+        if(item.q.length>92) q.classList.add('small');
+        box.append(q);
+      }
+      box.scrollTop=0;
+      $('overlay').classList.add('show');
+      fitPopupText();
+      $('close-popup').focus();
+    }
+
+    function closeQuestion(){
+      $('overlay').classList.remove('show');
+      if(lastFocus && lastFocus.isConnected) lastFocus.focus();
+    }
+
+    $('close-popup').addEventListener('click',closeQuestion);
+    $('overlay').addEventListener('click',e=>{ if(e.target===$('overlay')) closeQuestion(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('overlay').classList.contains('show')) closeQuestion(); });
+
+    const sticker=$('current');
+    sticker.addEventListener('pointerdown',e=>{
+      if(i>=items.length || e.button!==0 || $('overlay').classList.contains('show')) return;
+      const rect=sticker.getBoundingClientRect();
+      drag={id:e.pointerId,startX:e.clientX,startY:e.clientY,dx:e.clientX-rect.left,dy:e.clientY-rect.top,w:rect.width,h:rect.height,moved:false};
+      sticker.setPointerCapture(e.pointerId);
+    });
+
+    function inside(z,x,y){
+      const r=z.getBoundingClientRect();
+      return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom;
+    }
+
+    sticker.addEventListener('pointermove',e=>{
+      if(!drag || drag.id!==e.pointerId) return;
+      if(!drag.moved && Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)<7) return;
+      if(!drag.moved){
+        drag.moved=true;
+        ghost=sticker.cloneNode(true);
+        ghost.removeAttribute('id');
+        ghost.removeAttribute('tabindex');
+        ghost.classList.add('drag-ghost');
+        ghost.style.width=drag.w+'px';
+        ghost.style.height=drag.h+'px';
+        document.body.append(ghost);
+        sticker.style.visibility='hidden';
+      }
+      ghost.style.left=(e.clientX-drag.dx)+'px';
+      ghost.style.top=(e.clientY-drag.dy)+'px';
+      zones.forEach(z=>z.classList.toggle('over',inside(z,e.clientX,e.clientY)));
+    });
+
+    function endDrag(e){
+      if(!drag || drag.id!==e.pointerId) return;
+      const target=drag.moved ? zones.find(z=>inside(z,e.clientX,e.clientY)) : null;
+      drag=null;
+      if(ghost) ghost.remove();
+      ghost=null;
+      sticker.style.visibility='';
+      zones.forEach(z=>z.classList.remove('over'));
+      if(target) choose(target);
+    }
+
+    sticker.addEventListener('pointerup',endDrag);
+    sticker.addEventListener('pointercancel',endDrag);
+    sticker.addEventListener('keydown',e=>{
+      const map={ArrowUp:'ing',ArrowRight:'to',ArrowLeft:'bare',ArrowDown:'both'};
+      if(map[e.key]){
+        e.preventDefault();
+        choose(zones.find(z=>z.dataset.type===map[e.key]));
+      }
+    });
+
+    $('restart').addEventListener('click',restart);
+    $('play-again').addEventListener('click',restart);
+    restart();
+  })();
+  </script>
+</body>
+</html>
